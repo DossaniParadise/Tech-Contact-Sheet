@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Tech Support Contacts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#eef1f5; --panel:#ffffff; --panel-2:#f5f7fa;
+  --line:#dbe1ea; --line-soft:#e9edf3;
+  --ink:#16202e; --ink-mid:#4f5d75; --ink-dim:#8792a4;
+  --blue:#1d76bb; --blue-deep:#15588e; --blue-wash:#eaf3fb;
+  --green:#148a56; --green-deep:#0f6b43; --red:#d12b2b; --amber:#b45309;
+  --radius:12px; --radius-sm:8px;
+  --shadow:0 6px 22px rgba(30,45,70,.10);
+  --disp:'Archivo',system-ui,sans-serif; --body:'Inter',system-ui,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;min-height:100vh;padding-bottom:48px}
+button{font-family:inherit;cursor:pointer}
+input,textarea,select{font-family:inherit;font-size:16px;color:var(--ink)}
+.hidden{display:none!important}
+:focus-visible{outline:3px solid rgba(29,118,187,.45);outline-offset:2px}
+
+/* ---------- header ---------- */
+.top{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 18px 12px;position:sticky;top:0;z-index:20}
+.top .wrap{padding:0;display:flex;align-items:center;gap:12px}
+.brand{font-family:var(--disp);font-size:12px;font-weight:800;letter-spacing:.04em;color:var(--blue)}
+h1{font-family:var(--disp);font-size:22px;font-weight:800;letter-spacing:-.01em;margin:2px 0 0;line-height:1.15}
+.wrap{max-width:560px;margin:0 auto;padding:18px}
+.store-chip{margin-left:auto;display:none;align-items:center;gap:8px;background:var(--blue-wash);color:var(--blue-deep);
+  border:1px solid #cfe2f2;border-radius:999px;padding:6px 6px 6px 12px;font-size:13px;font-weight:700;white-space:nowrap}
+.store-chip.on{display:inline-flex}
+.store-chip button{background:#fff;border:1px solid #cfe2f2;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:600;color:var(--blue-deep)}
+
+/* ---------- progress ---------- */
+.prog{display:flex;gap:5px;margin:0 0 16px}
+.prog i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.prog i.on{background:var(--blue)}
+h2{font-family:var(--disp);font-size:21px;font-weight:700;margin:0 0 14px;letter-spacing:-.01em;line-height:1.2}
+.lead{margin:-6px 0 16px;color:var(--ink-mid);font-size:15px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+/* ---------- store picker ---------- */
+.search{width:100%;padding:14px 16px;font-size:17px;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);margin-bottom:12px;outline:none}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(29,118,187,.13)}
+.store-list{max-height:56vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow)}
+.store{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;
+  background:none;border:none;border-bottom:1px solid var(--line-soft);color:var(--ink);font-size:16px}
+.store:last-child{border-bottom:none}
+.store:active{background:var(--panel-2)}
+.store .num{font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;background:var(--blue);
+  padding:4px 7px;border-radius:6px;flex-shrink:0;min-width:62px;text-align:center}
+.store .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-mid);font-size:15px}
+.chev{color:var(--ink-dim);flex-shrink:0;font-size:20px;line-height:1}
+.empty{padding:26px 18px;text-align:center;color:var(--ink-dim)}
+
+/* ---------- category directory ---------- */
+.dir{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow);overflow:hidden}
+.cat{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px 16px 16px 18px;
+  background:none;border:none;border-bottom:1px solid var(--line-soft);color:var(--ink)}
+.cat:last-child{border-bottom:none}
+.cat:active{background:var(--blue-wash)}
+.cat .t{flex:1;min-width:0}
+.cat .n{font-family:var(--disp);font-size:17px;font-weight:700;line-height:1.2}
+.cat .d{font-size:14px;color:var(--ink-mid);margin-top:2px}
+.cat .ic{width:40px;height:40px;border-radius:10px;background:var(--blue-wash);color:var(--blue-deep);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+
+/* ---------- note step ---------- */
+.picked{display:flex;align-items:center;gap:12px;padding:14px 16px;margin-bottom:18px}
+.picked .ic{width:38px;height:38px;border-radius:10px;background:var(--blue-wash);display:flex;align-items:center;justify-content:center;font-size:19px}
+.picked .n{font-family:var(--disp);font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.change{background:none;border:1px solid var(--line);border-radius:var(--radius-sm);padding:7px 11px;
+  font-size:13px;font-weight:600;color:var(--ink-mid)}
+textarea.note{width:100%;min-height:110px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);resize:vertical;outline:none;line-height:1.45}
+textarea.note:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(29,118,187,.13)}
+.hint{font-size:13px;color:var(--ink-dim);margin:8px 2px 0}
+.submit{width:100%;margin-top:18px;padding:19px;border:none;border-radius:var(--radius);background:var(--blue);
+  color:#fff;font-family:var(--disp);font-size:18px;font-weight:800;letter-spacing:.01em;
+  box-shadow:0 6px 18px rgba(29,118,187,.28)}
+.submit:disabled{background:#c3ccd8;box-shadow:none}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);
+  border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:9px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- contact screen (the sign on the wall) ---------- */
+.sign{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
+.sign-head{padding:18px 20px 14px;border-bottom:1px solid var(--line-soft)}
+.sign-head .for{font-size:14px;color:var(--ink-mid)}
+.sign-head .who{font-family:var(--disp);font-size:24px;font-weight:800;letter-spacing:-.015em;line-height:1.1;margin-top:2px}
+.sign-body{padding:18px 20px 20px}
+.big-num{display:block;text-decoration:none;color:var(--ink);font-family:var(--disp);font-weight:900;
+  font-size:clamp(28px,8.4vw,44px);letter-spacing:-.02em;line-height:1.05;white-space:nowrap}
+.phone-note{margin-top:4px;color:var(--amber);font-weight:600;font-size:15px}
+.actions{display:grid;gap:10px;margin-top:16px}
+.act{display:flex;align-items:center;justify-content:center;gap:10px;padding:18px;border-radius:var(--radius);
+  text-decoration:none;font-family:var(--disp);font-size:18px;font-weight:800;border:none}
+.act.call{background:var(--green);color:#fff;box-shadow:0 6px 18px rgba(20,138,86,.28)}
+.act.call:active{background:var(--green-deep)}
+.act.mail{background:var(--panel);color:var(--blue-deep);border:2px solid var(--line)}
+.act.mail:active{background:var(--blue-wash)}
+.act small{display:block;font-family:var(--body);font-weight:500;font-size:13px;opacity:.85}
+.act .txt{text-align:left;min-width:0}
+.act .txt .em{font-size:15px;word-break:break-all}
+.cc{margin-top:0;padding:14px 16px;border-radius:var(--radius);background:#fff8e6;border:1px solid #f3dfa6;color:#6b4a07;font-size:14px;line-height:1.5}
+.cc b{font-weight:700;color:#4a3300}
+.ticket{margin-top:14px;padding:14px 16px;border-radius:var(--radius);background:var(--panel);border:1px dashed var(--line);
+  font-size:14px;color:var(--ink-mid);display:flex;align-items:center;gap:12px}
+.ticket .id{font-family:var(--mono);font-weight:700;color:var(--ink);font-size:15px}
+.ticket .ok{width:22px;height:22px;border-radius:50%;background:var(--green);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.warn{margin-top:14px;padding:13px 15px;border-radius:var(--radius-sm);background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:14px}
+.warn button{margin-top:9px;background:var(--red);color:#fff;border:none;border-radius:7px;padding:9px 14px;font-size:14px;font-weight:600}
+.again{display:block;margin:26px auto 0;background:none;border:none;color:var(--ink-dim);
+  font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.loading{text-align:center;padding:60px 20px;color:var(--ink-dim)}
+.loading .spin{border-color:var(--line);border-top-color:var(--blue);width:26px;height:26px;border-width:3px;display:block;margin:0 auto 14px}
+.err{margin:0;padding:18px;border-radius:var(--radius);background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.err button{margin-top:11px;background:var(--red);color:#fff;border:none;border-radius:7px;padding:10px 15px;font-size:15px;font-weight:600}
+.foot{text-align:center;margin-top:34px;font-size:12px;color:var(--ink-dim)}
+.foot a{color:var(--ink-dim)}
+
+/* ---------- admin ---------- */
+.adm h2{margin-bottom:6px}
+.adm .sub{color:var(--ink-mid);font-size:14px;margin:0 0 18px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--ink-mid);margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(29,118,187,.13)}
+.field textarea{min-height:76px;resize:vertical}
+.field .help{font-size:12px;color:var(--ink-dim);margin-top:4px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{padding:11px 16px;border-radius:var(--radius-sm);border:1px solid var(--line);background:#fff;font-weight:600;font-size:14px;color:var(--ink)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.danger{color:var(--red);border-color:#f3c0c0}
+.btn.ghost{border:none;background:none;color:var(--ink-mid)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sec{padding:18px;margin-bottom:16px}
+.sec h3{font-family:var(--disp);font-size:16px;font-weight:700;margin:0 0 14px}
+.alist{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff}
+.arow{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 14px;border-bottom:1px solid var(--line-soft)}
+.arow:last-child{border-bottom:none}
+.arow .ic{width:34px;height:34px;border-radius:8px;background:var(--blue-wash);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.arow .t{flex:1;min-width:0}
+.arow .n{font-weight:700;font-size:15px;line-height:1.2}
+.arow .m{font-size:12px;color:var(--ink-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.arow .m code{font-family:var(--mono);font-size:11px;background:var(--panel-2);padding:1px 5px;border-radius:4px}
+.mini{width:34px;height:34px;border:1px solid var(--line);background:#fff;border-radius:7px;font-size:15px;color:var(--ink-mid);padding:0;flex-shrink:0}
+.mini:disabled{opacity:.3}
+.mini.edit{width:auto;padding:0 11px;font-size:13px;font-weight:600;color:var(--blue-deep)}
+.savebar{position:sticky;bottom:0;background:rgba(238,241,245,.92);backdrop-filter:blur(8px);padding:12px 0 4px;margin-top:8px;
+  display:flex;gap:10px;align-items:center;border-top:1px solid var(--line)}
+.savebar .status{flex:1;font-size:13px;color:var(--ink-mid)}
+.savebar .status.dirty{color:var(--amber);font-weight:600}
+.savebar .status.ok{color:var(--green);font-weight:600}
+.savebar .status.bad{color:var(--red);font-weight:600}
+.overlay{position:fixed;inset:0;background:rgba(22,32,46,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center;padding:0}
+.sheet{background:#fff;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:20px 18px 28px}
+.sheet h3{font-family:var(--disp);font-size:18px;font-weight:800;margin:0 0 16px}
+@media (min-width:600px){.overlay{align-items:center;padding:20px}.sheet{border-radius:16px}}
+.qrbox{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0 4px}
+.qrbox #qr img,.qrbox #qr canvas{border-radius:6px}
+.qrbox .url{font-family:var(--mono);font-size:12px;color:var(--ink-mid);word-break:break-all;text-align:center}
+.login-card{padding:22px}
+.login-card .err-inline{color:var(--red);font-size:13px;margin-top:8px}
+
+/* ---------- print poster ---------- */
+#poster{display:none}
+@media print{
+  body{background:#fff;padding:0}
+  body > *:not(#poster){display:none!important}
+  #poster{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:95vh;text-align:center;font-family:var(--body);color:#111}
+  #poster .ph{font-family:var(--disp);font-size:54pt;font-weight:900;letter-spacing:-.02em;line-height:1;margin:0 0 10pt}
+  #poster .ps{font-size:20pt;color:#333;margin:0 0 28pt;max-width:70%}
+  #poster .pq img,#poster .pq canvas{width:300pt!important;height:300pt!important}
+  #poster .pu{font-family:var(--mono);font-size:11pt;color:#555;margin-top:22pt}
+  #poster .pf{font-size:12pt;color:#555;margin-top:34pt;max-width:75%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <div>
+      <div class="brand" id="brandLine">Dossani Paradise</div>
+      <h1 id="pageTitle">Tech Support</h1>
+    </div>
+    <div class="store-chip" id="chip"><span id="chipNum">—</span><button onclick="backToStores()">Change</button></div>
+  </div>
+</div>
+
+<div class="wrap" id="app">
+
+  <div id="scLoad" class="loading"><span class="spin"></span>Loading…</div>
+
+  <div id="scErr" class="err hidden">
+    <div id="errMsg">Could not load the store list.</div>
+    <button onclick="boot()">Try again</button>
+  </div>
+
+  <!-- step 1: store -->
+  <div id="scStore" class="hidden">
+    <div class="prog"><i class="on"></i><i></i><i></i></div>
+    <h2>Which store are you at?</h2>
+    <input id="q" class="search" type="text" inputmode="numeric" autocomplete="off"
+           placeholder="Search store number or name" oninput="renderStores()">
+    <div id="storeList" class="store-list"></div>
+  </div>
+
+  <!-- step 2: category -->
+  <div id="scCat" class="hidden">
+    <div class="prog"><i class="on"></i><i class="on"></i><i></i></div>
+    <h2>What do you need help with?</h2>
+    <p class="lead">Pick the system that's giving you trouble. You'll get the right number to call.</p>
+    <div class="dir" id="catList"></div>
+  </div>
+
+  <!-- step 3: note -->
+  <div id="scNote" class="hidden">
+    <div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+    <div class="picked card">
+      <span class="ic" id="pkIcon">🛠</span>
+      <span class="n" id="pkName">—</span>
+      <button class="change" onclick="show('cat')">Change</button>
+    </div>
+    <h2>What's going on?</h2>
+    <textarea id="note" class="note" placeholder="Optional. One line is plenty — e.g. “Front kiosk frozen on payment screen.”"></textarea>
+    <p class="hint">This goes on the ticket so your coach and IT know you reached out.</p>
+    <button class="submit" id="go" onclick="submit()">Show me who to contact</button>
+  </div>
+
+  <!-- step 4: contact -->
+  <div id="scDone" class="hidden">
+    <div class="sign">
+      <div class="sign-head">
+        <div class="for" id="dnFor">Help with Kiosks</div>
+        <div class="who" id="dnWho">—</div>
+      </div>
+      <div class="sign-body">
+        <a class="big-num" id="dnNum" href="#">—</a>
+        <div class="phone-note hidden" id="dnPhoneNote"></div>
+        <div class="actions">
+          <a class="act call" id="dnCall" href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+            Call now
+          </a>
+          <a class="act mail" id="dnMail" href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+            <span class="txt">Email instead<small class="em" id="dnEmailTxt">—</small></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cc" id="ccBox"></div>
+
+    <div class="ticket" id="ticketBox">
+      <span class="ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <span>Ticket <span class="id" id="ticketId">—</span> filed for store <span id="ticketStore">—</span>. Mention it if the vendor asks for a reference.</span>
+    </div>
+    <div class="warn hidden" id="failBox">
+      <div id="failMsg"></div>
+      <button onclick="retry()">Retry ticket</button>
+    </div>
+
+    <button class="again" onclick="startOver()">Start over</button>
+  </div>
+
+  <!-- admin: login -->
+  <div id="scAdminLogin" class="hidden adm">
+    <h2>Admin</h2>
+    <p class="sub">Edit the contact list, the CC reminder, and print the QR poster.</p>
+    <div class="card login-card">
+      <div class="field"><label for="pw">Maintenance system password</label>
+        <input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <div class="btn-row"><button class="btn primary" id="pwBtn" onclick="adminLogin()">Open admin</button>
+        <button class="btn ghost" onclick="location.hash='';route()">Back to the page</button></div>
+      <div class="err-inline hidden" id="pwErr"></div>
+    </div>
+  </div>
+
+  <!-- admin: panel -->
+  <div id="scAdmin" class="hidden adm">
+    <h2>Admin</h2>
+    <p class="sub">Changes go live for every store the moment you save. <a href="#" onclick="adminLogout();return false">Sign out</a></p>
+
+    <div class="card sec">
+      <h3>Contacts</h3>
+      <div class="alist" id="admList"></div>
+      <div class="btn-row" style="margin-top:12px"><button class="btn" onclick="editCat(-1)">+ Add a contact</button></div>
+    </div>
+
+    <div class="card sec">
+      <h3>Page text</h3>
+      <div class="field"><label for="sTitle">Page title</label><input id="sTitle" oninput="dirty()"></div>
+      <div class="field"><label for="sBrand">Line above the title</label><input id="sBrand" oninput="dirty()"></div>
+      <div class="field"><label for="sCc">Always-CC email</label><input id="sCc" type="email" oninput="dirty()">
+        <div class="help">Added automatically to the CC line when a store taps “Email instead”.</div></div>
+      <div class="field"><label for="sCcNote">Reminder shown under the contact</label><textarea id="sCcNote" oninput="dirty()"></textarea></div>
+      <div class="field"><label for="sDiv">Which stores appear</label>
+        <select id="sDiv" onchange="dirty()"><option value="bk">Burger King only</option><option value="all">All stores</option></select></div>
+    </div>
+
+    <div class="card sec">
+      <h3>QR code for the stores</h3>
+      <div class="qrbox"><div id="qr"></div><div class="url" id="qrUrl"></div>
+        <div class="btn-row"><button class="btn" onclick="window.print()">Print poster</button></div></div>
+    </div>
+
+    <div class="savebar">
+      <span class="status" id="saveStatus">No unsaved changes</span>
+      <button class="btn" onclick="loadAdmin(true)">Discard</button>
+      <button class="btn primary" id="saveBtn" onclick="saveAll()" disabled>Save changes</button>
+    </div>
+  </div>
+
+  <div class="foot" id="foot"><a href="#admin" onclick="setTimeout(route,0)">Admin</a></div>
+</div>
+
+<!-- editor sheet -->
+<div class="overlay hidden" id="editor">
+  <div class="sheet">
+    <h3 id="edTitle">Edit contact</h3>
+    <div class="row2">
+      <div class="field"><label for="eIcon">Icon (emoji)</label><input id="eIcon" maxlength="4"></div>
+      <div class="field"><label for="eName">Name</label><input id="eName" placeholder="Kiosks"></div>
+    </div>
+    <div class="field"><label for="eDesc">What it covers</label><input id="eDesc" placeholder="Self-order kiosk screens"></div>
+    <div class="row2">
+      <div class="field"><label for="ePhone">Phone</label><input id="ePhone" inputmode="tel" placeholder="888-369-5590"></div>
+      <div class="field"><label for="ePhoneNote">After it connects</label><input id="ePhoneNote" placeholder="Press Option 1"></div>
+    </div>
+    <div class="field"><label for="eEmail">Email</label><input id="eEmail" type="email" placeholder="support@vendor.com"></div>
+    <div class="row2">
+      <div class="field"><label for="eCat">FixMi category</label><select id="eCat" onchange="fillSubs()"></select></div>
+      <div class="field"><label for="eSub">FixMi subcategory</label><select id="eSub"></select></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="ePri">Ticket priority</label>
+        <select id="ePri"><option value="low">Low</option><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
+      <div class="field"><label for="eTicket">File a ticket?</label>
+        <select id="eTicket"><option value="1">Yes</option><option value="0">No, just show the contact</option></select></div>
+    </div>
+    <div class="btn-row" style="margin-top:6px">
+      <button class="btn primary" onclick="applyEdit()">Done</button>
+      <button class="btn" onclick="closeEditor()">Cancel</button>
+      <button class="btn danger hidden" id="eDelete" style="margin-left:auto" onclick="deleteCat()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- print poster -->
+<div id="poster">
+  <div class="ph" id="posterH">Tech trouble?</div>
+  <div class="ps" id="posterS">Scan to see who to call for kiosks, PAR, internet, cameras, menu boards, delivery apps, SmartSafe and headsets.</div>
+  <div class="pq" id="posterQr"></div>
+  <div class="pu" id="posterUrl"></div>
+  <div class="pf" id="posterF">Picking a category also files a ticket for you, so IT and your District Manager know you reached out.</div>
+</div>
+
+<script>
+/* ============================================================
+   Tech Support Contacts — public QR landing page + admin panel.
+   Sibling of the Drive-Thru Headset Exchange page: same alignment
+   API, same ticket shape. Contacts are stored in the API under
+   `techContacts` so admins can edit without redeploying; the
+   DEFAULTS below are used until that node exists.
+   ============================================================ */
+const API_BASE_URL   = "https://alignment-api-khaki.vercel.app/api/dpm-alignment";
+const WRITE_PASSWORD = "rm123";                 // ticket writes, same as the headset page
+const TICKETS_NODE   = "maintenanceTickets";
+const CONFIG_NODE    = "techContacts";
+const CAT_PREFIX     = {it:"IT", pos:"POS", ops_support:"OPS", equipment:"EQ", facilities:"FAC", supplies:"SUP"};
+
+const FILED_BY_EMAIL = "techsupport-qr@dossaniparadise.com";
+const FILED_BY_ROLE  = "manager";
+const FILED_BY_NAME  = "Tech Support QR";
+const STORE_TZ       = "America/Chicago";
+
+const DEFAULTS = {
+  settings: {
+    title: "Tech Support",
+    brand: "Dossani Paradise",
+    ccEmail: "it@dossaniparadise.com",
+    ccNote: "When you email about technology, always CC your District Manager and it@dossaniparadise.com.",
+    division: "bk"
+  },
+  categories: [
+    {id:"kiosk",    icon:"🖥️", name:"Kiosks",             desc:"Self-order kiosk screens",              phone:"888-369-5590",   phoneNote:"", email:"bkkiosk@whopper.com",                 cat:"pos", sub:"pos_other",            priority:"urgent", ticket:true},
+    {id:"par",      icon:"🧾", name:"PAR",                desc:"Registers and PAR terminals",            phone:"484-946-7737",   phoneNote:"", email:"bkunifiedsupport@whopper.com",        cat:"pos", sub:"pos_terminals",        priority:"urgent", ticket:true},
+    {id:"internet", icon:"📶", name:"Internet",           desc:"Comcast internet down or slow",          phone:"1-866-407-6236", phoneNote:"Press Option 1", email:"",                        cat:"it",  sub:"it_internet",          priority:"urgent", ticket:true},
+    {id:"cameras",  icon:"📷", name:"Cameras",            desc:"DTiQ cameras and recordings",            phone:"725-227-7253",   phoneNote:"", email:"",                                    cat:"it",  sub:"it_camera",            priority:"high",   ticket:true},
+    {id:"xenial",   icon:"💳", name:"Xenial / Genius",    desc:"Xenial POS and Genius issues",           phone:"800-547-4266",   phoneNote:"", email:"sos@xenial.com",                      cat:"pos", sub:"pos_other",            priority:"urgent", ticket:true},
+    {id:"menu",     icon:"📺", name:"Menu boards",        desc:"Stratacache digital menu boards",        phone:"877-338-7683",   phoneNote:"", email:"support.bkcusa@stratacachedmb.com",   cat:"pos", sub:"pos_indoor_dmbs",      priority:"high",   ticket:true},
+    {id:"delivery", icon:"🛵", name:"Delivery apps",      desc:"UberEats, DoorDash, GrubHub",            phone:"484-946-7737",   phoneNote:"", email:"bktechescalations@rbi.com",           cat:"pos", sub:"pos_other",            priority:"high",   ticket:true},
+    {id:"safe",     icon:"🔐", name:"SmartSafe",          desc:"Safe won't open, count or connect",      phone:"951-685-9681",   phoneNote:"", email:"",                                    cat:"it",  sub:"it_smart_safe",        priority:"urgent", ticket:true},
+    {id:"headset",  icon:"🎧", name:"HME Headsets",       desc:"HME drive-thru headsets and base",       phone:"1-800-848-4468", phoneNote:"", email:"",                                    cat:"it",  sub:"it_headset_intercom",  priority:"urgent", ticket:true}
+  ]
+};
+
+/* FixMi category tree fallback (used by the admin dropdowns if the API doesn't return divisionCategories). */
+const FALLBACK_TREE = [
+  {key:"it",label:"IT",subs:[{key:"it_alarm",label:"Alarm"},{key:"it_camera",label:"Camera"},{key:"it_headset_intercom",label:"Headset/Intercom"},{key:"it_internet",label:"Internet"},{key:"it_lobby_atmosphere_safety_tv",label:"Lobby Atmosphere/Safety TV"},{key:"it_music",label:"Music"},{key:"it_network_issues",label:"Network Issues"},{key:"it_new_user",label:"New User"},{key:"it_office_printers",label:"Office Printers"},{key:"it_phone",label:"Phone"},{key:"it_other",label:"Other"},{key:"it_smart_safe",label:"Smart Safe"}]},
+  {key:"pos",label:"POS",subs:[{key:"pos_credit_cards_pin_pad",label:"Credit Cards / Pin Pad"},{key:"pos_drive_thru_director",label:"Drive Thru Director"},{key:"pos_indoor_dmbs",label:"Indoor DMBs"},{key:"pos_kitchen_screen",label:"Kitchen Screen"},{key:"pos_kitchen_sticky_printer",label:"Kitchen Sticky Printer"},{key:"pos_odmb_warranty_issues",label:"ODMB Warranty Issues"},{key:"pos_outdoor_dmbs",label:"Outdoor DMBs"},{key:"pos_rti",label:"RTI"},{key:"pos_rti_labor",label:"RTI Labor"},{key:"pos_sicom",label:"Sicom"},{key:"pos_terminals",label:"Terminals"},{key:"pos_thermal_printer",label:"Thermal Printer"},{key:"pos_other",label:"Other"}]},
+  {key:"ops_support",label:"OPS Support",subs:[{key:"ops_support_bitrix",label:"Bitrix"},{key:"ops_support_bku",label:"BKU"},{key:"ops_support_onedrive",label:"OneDrive"},{key:"ops_support_password_resets",label:"Password Resets"},{key:"ops_support_paycom",label:"Paycom"},{key:"ops_support_rsi",label:"RSI"},{key:"ops_support_training_computer_tablet",label:"Training Computer/Tablet"},{key:"ops_support_zenput",label:"Zenput"}]}
+];
+
+let MASTER = {}, STORES = [], CONFIG = null, TREE = FALLBACK_TREE;
+let selectedId = null, selectedCat = null, lastTicketId = null;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const now = () => Date.now();
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const digitsOf = s => String(s || "").replace(/\D/g, "");
+const telOf = p => { const d = digitsOf(p); return d.length === 10 ? "+1" + d : d.length === 11 && d[0] === "1" ? "+" + d : "+" + d; };
+
+function fetchWithTimeout(url, opts = {}, ms = 25000) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), ms);
+  return fetch(url, {...opts, signal: ctl.signal}).finally(() => clearTimeout(t));
+}
+
+/* ---- division guess (mirrors FixMi/FindMi) ---- */
+function guessDivision(st) {
+  const n = ((st && st.storeName) || "").trim();
+  if (/burger\s*king|\bbk\b/i.test(n)) return "bk";
+  if (/subway/i.test(n)) return "subway";
+  if (/car\s*wash|\bwash\b/i.test(n)) return "carwash";
+  if (/\bstop\b|quick\s*stop|travel\s*stop|truck\s*stop/i.test(n)) return "cstore";
+  return "other";
+}
+const divisionOf = st => (((st && st.division) || "").trim()) || guessDivision(st);
+
+/* ---- config ---- */
+function normalizeConfig(raw) {
+  const c = {settings: {...DEFAULTS.settings}, categories: []};
+  if (raw && raw.settings) Object.assign(c.settings, raw.settings);
+  let cats = raw && raw.categories;
+  if (cats && !Array.isArray(cats)) cats = Object.values(cats);
+  if (!cats || !cats.length) cats = DEFAULTS.categories;
+  c.categories = cats.map(x => ({
+    id: x.id || uid(), icon: x.icon || "🛠", name: x.name || "", desc: x.desc || "",
+    phone: x.phone || "", phoneNote: x.phoneNote || "", email: x.email || "",
+    cat: x.cat || "it", sub: x.sub || "it_other", priority: x.priority || "urgent",
+    ticket: x.ticket !== false && x.ticket !== 0 && x.ticket !== "0",
+    order: typeof x.order === "number" ? x.order : 0
+  })).sort((a, b) => a.order - b.order);
+  c.categories.forEach((x, i) => x.order = i);
+  return c;
+}
+function applySettingsToPage() {
+  const s = CONFIG.settings;
+  $("pageTitle").textContent = s.title || "Tech Support";
+  $("brandLine").textContent = s.brand || "";
+  document.title = (s.title || "Tech Support") + " Contacts";
+  $("posterS").textContent = "Scan to see who to call for " + listWords(CONFIG.categories.map(c => c.name.toLowerCase())) + ".";
+}
+function listWords(a) { return a.length <= 1 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+
+/* ---- load ---- */
+async function boot() {
+  show("load");
+  try {
+    const r = await fetchWithTimeout(API_BASE_URL, {cache: "no-store"});
+    if (!r.ok) throw new Error("Could not reach the maintenance system.");
+    MASTER = await r.json();
+    CONFIG = normalizeConfig(MASTER[CONFIG_NODE]);
+    const dc = MASTER.divisionCategories && MASTER.divisionCategories.bk;
+    if (Array.isArray(dc) && dc.length) TREE = dc;
+    applySettingsToPage();
+    const rest = MASTER.restaurants || {};
+    const div = CONFIG.settings.division || "bk";
+    STORES = Object.entries(rest)
+      .map(([id, s]) => ({id, ...s}))
+      .filter(s => div === "all" || divisionOf(s) === div)
+      .sort((a, b) => {
+        const na = parseInt(digitsOf(a.storeNumber), 10), nb = parseInt(digitsOf(b.storeNumber), 10);
+        if (isNaN(na) && isNaN(nb)) return String(a.storeName||"").localeCompare(String(b.storeName||""));
+        if (isNaN(na)) return 1;
+        if (isNaN(nb)) return -1;
+        return na - nb;
+      });
+    if (!STORES.length) throw new Error("No stores came back from the master list.");
+    renderStores();
+    route();
+  } catch (e) {
+    $("errMsg").textContent = e.message || "Could not load.";
+    show("err");
+  }
+}
+
+const SCREENS = {load:"scLoad",err:"scErr",store:"scStore",cat:"scCat",note:"scNote",done:"scDone",adminLogin:"scAdminLogin",admin:"scAdmin"};
+function show(which) {
+  Object.entries(SCREENS).forEach(([k, id]) => $(id).classList.toggle("hidden", k !== which));
+  $("chip").classList.toggle("on", !!selectedId && (which === "cat" || which === "note"));
+  $("foot").classList.toggle("hidden", which === "admin" || which === "adminLogin");
+  window.scrollTo(0, 0);
+}
+function route() {
+  if (location.hash === "#admin") {
+    if (sessionStorage.getItem("tc_pw")) loadAdmin(); else show("adminLogin");
+  } else {
+    if (!selectedId) show("store"); else show("cat");
+  }
+}
+window.addEventListener("hashchange", route);
+
+/* ---- step 1 ---- */
+function renderStores() {
+  const q = ($("q").value || "").trim().toLowerCase();
+  const list = q
+    ? STORES.filter(s => (String(s.storeNumber||"") + " " + String(s.storeName||"") + " " + String(s.address||"")).toLowerCase().includes(q))
+    : STORES;
+  $("storeList").innerHTML = list.length
+    ? list.map(s => `<button class="store" onclick="chooseStore('${esc(s.id)}')">
+        <span class="num">${esc(s.storeNumber || "#")}</span>
+        <span class="nm">${esc(shortName(s))}</span>
+        <span class="chev">›</span></button>`).join("")
+    : `<div class="empty">No store matches “${esc(q)}”.</div>`;
+}
+function shortName(s) {
+  let n = String(s.storeName || "").replace(/burger\s*king/ig, "").replace(/#?\s*\d{3,}/g, "").trim();
+  n = n.replace(/^[-–—·,|]+|[-–—·,|]+$/g, "").trim();
+  return n || String(s.address || "").split(",")[0] || "Store";
+}
+function chooseStore(id) {
+  const s = STORES.find(x => x.id === id);
+  if (!s) return;
+  selectedId = id;
+  $("chipNum").textContent = "Store " + (s.storeNumber || "#");
+  renderCats();
+  show("cat");
+}
+function backToStores() { selectedId = null; show("store"); }
+
+/* ---- step 2 ---- */
+function renderCats() {
+  $("catList").innerHTML = CONFIG.categories.map(c => `<button class="cat" onclick="chooseCat('${esc(c.id)}')">
+      <span class="ic">${esc(c.icon)}</span>
+      <span class="t"><span class="n">${esc(c.name)}</span>${c.desc ? `<div class="d">${esc(c.desc)}</div>` : ""}</span>
+      <span class="chev">›</span></button>`).join("");
+}
+function chooseCat(id) {
+  const c = CONFIG.categories.find(x => x.id === id);
+  if (!c) return;
+  selectedCat = c;
+  $("pkIcon").textContent = c.icon;
+  $("pkName").textContent = c.name;
+  $("note").value = "";
+  $("go").disabled = false;
+  $("go").textContent = c.ticket ? "Show me who to contact" : "Show me who to contact";
+  show("note");
+}
+
+/* ---- ticket ---- */
+function nextShortId(store, tickets, prefix) {
+  const digits = digitsOf(store.storeNumber) || "00000";
+  const stem = `${digits}-${prefix}-`;
+  let max = 0;
+  Object.values(tickets).forEach(t => {
+    if (t && typeof t.shortId === "string" && t.shortId.startsWith(stem)) {
+      const n = parseInt(t.shortId.slice(stem.length), 10);
+      if (!isNaN(n) && n > max) max = n;
+    }
+  });
+  return stem + String(max + 1).padStart(4, "0");
+}
+function describe(store, c, note) {
+  const d = new Date();
+  const time = d.toLocaleTimeString("en-US", {timeZone: STORE_TZ, hour: "numeric", minute: "2-digit"});
+  const date = d.toLocaleDateString("en-US", {timeZone: STORE_TZ, month: "2-digit", day: "2-digit"});
+  const who = [c.phone, c.email].filter(Boolean).join(" / ");
+  return `Store ${store.storeNumber || ""} looked up the ${c.name} support contact at ${time} on ${date} and was shown: ${who || "no contact on file"}. `
+       + (note ? `Store note: "${note}" ` : "No note from the store. ")
+       + `The store was told to contact the vendor directly. Follow up to confirm it was resolved, then close this ticket.`;
+}
+async function createTicket(store, c, note) {
+  const [openR, closedR] = await Promise.all([
+    fetchWithTimeout(API_BASE_URL, {cache: "no-store"}),
+    fetchWithTimeout(API_BASE_URL + "?closed=only", {cache: "no-store"}).catch(() => null)
+  ]);
+  if (!openR.ok) throw new Error("Could not reach the maintenance system.");
+  const openData = await openR.json();
+  let closedData = {};
+  if (closedR && closedR.ok) { try { closedData = await closedR.json(); } catch (e) {} }
+  const tickets = {...(openData[TICKETS_NODE] || {}), ...(closedData[TICKETS_NODE] || {})};
+
+  const prefix = CAT_PREFIX[c.cat] || String(c.cat || "IT").toUpperCase().slice(0, 4);
+  let shortId = nextShortId(store, tickets, prefix);
+  const taken = new Set(Object.values(tickets).map(t => t && t.shortId));
+  let guard = 0;
+  while (taken.has(shortId) && guard++ < 50) {
+    const m = shortId.match(/-(\d+)$/);
+    shortId = shortId.replace(/-\d+$/, "-" + String(parseInt(m[1], 10) + 1).padStart(4, "0"));
+  }
+  const ts = now();
+  const ticket = {
+    shortId, storeId: store.id,
+    category: c.cat, subcategory: c.sub, priority: c.priority || "urgent",
+    description: describe(store, c, note),
+    photos: [],
+    status: "unassigned", assignedVendorId: null, assignedTechId: null,
+    createdBy: FILED_BY_EMAIL, createdByRole: FILED_BY_ROLE, createdByName: FILED_BY_NAME,
+    createdAt: ts, updatedAt: ts,
+    activity: [{ts, by: FILED_BY_NAME, role: FILED_BY_ROLE, action: "created"}],
+    comments: []
+  };
+  const w = await fetchWithTimeout(API_BASE_URL, {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({password: WRITE_PASSWORD, updates: {[`${TICKETS_NODE}/${uid()}`]: ticket}})
+  });
+  if (!w.ok) { let m = "Write failed"; try { m = (await w.json()).error || m; } catch (e) {} throw new Error(m); }
+  return shortId;
+}
+
+/* ---- step 3 → 4 ---- */
+async function submit() {
+  if (!selectedId || !selectedCat) return;
+  const btn = $("go");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>One moment…';
+  const store = STORES.find(s => s.id === selectedId) || {};
+  const note = ($("note").value || "").trim().slice(0, 500);
+  lastTicketId = null;
+  $("failBox").classList.add("hidden");
+  $("ticketBox").classList.add("hidden");
+  if (selectedCat.ticket) {
+    try {
+      lastTicketId = await createTicket(store, selectedCat, note);
+    } catch (e) {
+      $("failMsg").textContent = "You can still call — but the ticket didn't reach the maintenance system: "
+        + (e.message || "connection problem") + ". Tap retry, or tell your coach.";
+      $("failBox").classList.remove("hidden");
+    }
+  }
+  renderDone(store, selectedCat, note);
+  btn.disabled = false; btn.textContent = "Show me who to contact";
+  show("done");
+}
+function retry() {
+  const box = $("failBox");
+  const store = STORES.find(s => s.id === selectedId) || {};
+  const note = ($("note").value || "").trim().slice(0, 500);
+  box.innerHTML = '<div><span class="spin" style="border-color:rgba(153,27,27,.3);border-top-color:#991b1b"></span>Filing ticket…</div>';
+  createTicket(store, selectedCat, note)
+    .then(id => { lastTicketId = id; box.classList.add("hidden"); renderDone(store, selectedCat, note); })
+    .catch(e => { box.innerHTML = `<div>Still couldn't file it: ${esc(e.message || "connection problem")}. Call anyway, then tell your coach.</div>
+      <button onclick="retry()">Retry ticket</button>`; });
+}
+function renderDone(store, c, note) {
+  const s = CONFIG.settings;
+  const num = store.storeNumber || "";
+  $("dnFor").textContent = "Help with " + c.name;
+  $("dnWho").textContent = c.desc || c.name;
+  const hasPhone = !!digitsOf(c.phone), hasMail = !!c.email;
+  $("dnNum").textContent = hasPhone ? c.phone : (hasMail ? c.email : "No contact on file");
+  $("dnNum").href = hasPhone ? "tel:" + telOf(c.phone) : (hasMail ? "mailto:" + c.email : "#");
+  $("dnNum").style.fontSize = hasPhone ? "" : "clamp(20px,6vw,28px)";
+  $("dnPhoneNote").textContent = c.phoneNote || "";
+  $("dnPhoneNote").classList.toggle("hidden", !c.phoneNote);
+  $("dnCall").classList.toggle("hidden", !hasPhone);
+  $("dnCall").href = hasPhone ? "tel:" + telOf(c.phone) : "#";
+  $("dnMail").classList.toggle("hidden", !hasMail);
+  $("dnEmailTxt").textContent = c.email;
+  if (hasMail) {
+    const subj = `Store ${num} – ${c.name} issue` + (lastTicketId ? ` (${lastTicketId})` : "");
+    const body = `Store ${num}${store.storeName ? " – " + store.storeName : ""}\n${store.address || ""}\n` +
+      (lastTicketId ? `Internal ticket: ${lastTicketId}\n` : "") + `\nIssue: ${note || ""}\n\n`;
+    const cc = s.ccEmail ? `&cc=${encodeURIComponent(s.ccEmail)}` : "";
+    $("dnMail").href = `mailto:${encodeURIComponent(c.email)}?subject=${encodeURIComponent(subj)}${cc}&body=${encodeURIComponent(body)}`;
+  }
+  $("dnMail").querySelector(".txt").firstChild.textContent = hasPhone ? "Email instead" : "Send an email";
+  $("ccBox").innerHTML = s.ccNote ? `<b>Before you email:</b> ${esc(s.ccNote)}` : "";
+  $("ccBox").classList.toggle("hidden", !s.ccNote || !hasMail);
+  if (lastTicketId) {
+    $("ticketId").textContent = lastTicketId;
+    $("ticketStore").textContent = num;
+    $("ticketBox").classList.remove("hidden");
+  }
+}
+function startOver() {
+  selectedCat = null; lastTicketId = null;
+  $("note").value = "";
+  show("cat");
+}
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+let ADM = null, editingIndex = -1, isDirty = false;
+const admPw = () => sessionStorage.getItem("tc_pw") || "";
+
+async function apiWrite(updates, password) {
+  const w = await fetchWithTimeout(API_BASE_URL, {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({password, updates})
+  });
+  if (!w.ok) { let m = "Write failed (" + w.status + ")"; try { m = (await w.json()).error || m; } catch (e) {} throw new Error(m); }
+  return w;
+}
+async function adminLogin() {
+  const pw = $("pw").value;
+  const btn = $("pwBtn"); btn.disabled = true; btn.textContent = "Checking…";
+  $("pwErr").classList.add("hidden");
+  try {
+    await apiWrite({[`${CONFIG_NODE}/meta/lastLogin`]: now()}, pw);
+    sessionStorage.setItem("tc_pw", pw);
+    $("pw").value = "";
+    loadAdmin();
+  } catch (e) {
+    $("pwErr").textContent = /password|auth|forbidden|unauthori/i.test(e.message) ? "That password doesn't have write access." : ("Couldn't verify: " + e.message);
+    $("pwErr").classList.remove("hidden");
+  } finally { btn.disabled = false; btn.textContent = "Open admin"; }
+}
+function adminLogout() { sessionStorage.removeItem("tc_pw"); location.hash = ""; route(); }
+
+function loadAdmin(discard) {
+  if (discard && isDirty && !confirm("Throw away your unsaved changes?")) return;
+  ADM = JSON.parse(JSON.stringify(CONFIG));
+  $("sTitle").value = ADM.settings.title || "";
+  $("sBrand").value = ADM.settings.brand || "";
+  $("sCc").value = ADM.settings.ccEmail || "";
+  $("sCcNote").value = ADM.settings.ccNote || "";
+  $("sDiv").value = ADM.settings.division || "bk";
+  renderAdminList();
+  setDirty(false);
+  show("admin");
+  renderQR();
+}
+function dirty() { setDirty(true); }
+function setDirty(v) {
+  isDirty = v;
+  const st = $("saveStatus");
+  st.className = "status" + (v ? " dirty" : "");
+  st.textContent = v ? "Unsaved changes" : "No unsaved changes";
+  $("saveBtn").disabled = !v;
+}
+function renderAdminList() {
+  $("admList").innerHTML = ADM.categories.map((c, i) => `<div class="arow">
+      <span class="ic">${esc(c.icon)}</span>
+      <span class="t"><div class="n">${esc(c.name)}</div>
+        <div class="m">${esc(c.phone || "no phone")}${c.email ? " · " + esc(c.email) : ""} <code>${esc(c.sub)}</code>${c.ticket ? "" : " · no ticket"}</div></span>
+      <button class="mini" title="Move up" ${i === 0 ? "disabled" : ""} onclick="moveCat(${i},-1)">↑</button>
+      <button class="mini" title="Move down" ${i === ADM.categories.length - 1 ? "disabled" : ""} onclick="moveCat(${i},1)">↓</button>
+      <button class="mini edit" onclick="editCat(${i})">Edit</button>
+    </div>`).join("") || `<div class="empty">No contacts yet. Add one below.</div>`;
+}
+function moveCat(i, d) {
+  const j = i + d; if (j < 0 || j >= ADM.categories.length) return;
+  [ADM.categories[i], ADM.categories[j]] = [ADM.categories[j], ADM.categories[i]];
+  renderAdminList(); setDirty(true);
+}
+function fillCats(selected) {
+  $("eCat").innerHTML = TREE.map(t => `<option value="${esc(t.key)}">${esc(t.label)}</option>`).join("");
+  if (selected && TREE.some(t => t.key === selected)) $("eCat").value = selected;
+}
+function fillSubs(selected) {
+  const t = TREE.find(x => x.key === $("eCat").value);
+  const subs = (t && t.subs) || [];
+  $("eSub").innerHTML = subs.length ? subs.map(s => `<option value="${esc(s.key)}">${esc(s.label)}</option>`).join("")
+                                    : `<option value="">(none)</option>`;
+  if (selected && subs.some(s => s.key === selected)) $("eSub").value = selected;
+}
+function editCat(i) {
+  editingIndex = i;
+  const c = i >= 0 ? ADM.categories[i] : {icon:"🛠", name:"", desc:"", phone:"", phoneNote:"", email:"", cat:"it", sub:"it_other", priority:"urgent", ticket:true};
+  $("edTitle").textContent = i >= 0 ? "Edit contact" : "Add a contact";
+  $("eIcon").value = c.icon; $("eName").value = c.name; $("eDesc").value = c.desc;
+  $("ePhone").value = c.phone; $("ePhoneNote").value = c.phoneNote; $("eEmail").value = c.email;
+  fillCats(c.cat); fillSubs(c.sub);
+  $("ePri").value = c.priority || "urgent"; $("eTicket").value = c.ticket ? "1" : "0";
+  $("eDelete").classList.toggle("hidden", i < 0);
+  $("editor").classList.remove("hidden");
+  setTimeout(() => $("eName").focus(), 50);
+}
+function closeEditor() { $("editor").classList.add("hidden"); }
+function applyEdit() {
+  const name = $("eName").value.trim();
+  if (!name) { $("eName").focus(); return; }
+  if (!$("ePhone").value.trim() && !$("eEmail").value.trim()) { alert("Add a phone number or an email so the store has someone to reach."); return; }
+  const c = {
+    id: editingIndex >= 0 ? ADM.categories[editingIndex].id : uid(),
+    icon: $("eIcon").value.trim() || "🛠", name, desc: $("eDesc").value.trim(),
+    phone: $("ePhone").value.trim(), phoneNote: $("ePhoneNote").value.trim(), email: $("eEmail").value.trim(),
+    cat: $("eCat").value, sub: $("eSub").value, priority: $("ePri").value, ticket: $("eTicket").value === "1"
+  };
+  if (editingIndex >= 0) ADM.categories[editingIndex] = c; else ADM.categories.push(c);
+  closeEditor(); renderAdminList(); setDirty(true);
+}
+function deleteCat() {
+  if (editingIndex < 0) return;
+  if (!confirm(`Delete “${ADM.categories[editingIndex].name}”? Stores won't see it after you save.`)) return;
+  ADM.categories.splice(editingIndex, 1);
+  closeEditor(); renderAdminList(); setDirty(true);
+}
+async function saveAll() {
+  ADM.settings = {
+    title: $("sTitle").value.trim() || "Tech Support",
+    brand: $("sBrand").value.trim(),
+    ccEmail: $("sCc").value.trim(),
+    ccNote: $("sCcNote").value.trim(),
+    division: $("sDiv").value
+  };
+  ADM.categories.forEach((c, i) => c.order = i);
+  const st = $("saveStatus"); st.className = "status"; st.textContent = "Saving…";
+  $("saveBtn").disabled = true;
+  try {
+    await apiWrite({
+      [`${CONFIG_NODE}/settings`]: ADM.settings,
+      [`${CONFIG_NODE}/categories`]: ADM.categories,
+      [`${CONFIG_NODE}/meta/updatedAt`]: now()
+    }, admPw());
+    CONFIG = normalizeConfig(ADM);
+    applySettingsToPage();
+    setDirty(false);
+    st.className = "status ok"; st.textContent = "Saved — live for every store now.";
+  } catch (e) {
+    st.className = "status bad"; st.textContent = "Couldn't save: " + e.message;
+    $("saveBtn").disabled = false;
+    if (/password|auth|forbidden|unauthori/i.test(e.message)) { sessionStorage.removeItem("tc_pw"); }
+  }
+}
+
+/* ---- QR (loaded only in admin) ---- */
+function pageUrl() { return location.origin + location.pathname; }
+function renderQR() {
+  const url = pageUrl();
+  $("qrUrl").textContent = url; $("posterUrl").textContent = url;
+  $("posterH").textContent = (CONFIG.settings.title || "Tech") + " trouble?";
+  const draw = () => {
+    ["qr", "posterQr"].forEach((id, k) => {
+      const el = $(id); el.innerHTML = "";
+      new QRCode(el, {text: url, width: k ? 600 : 200, height: k ? 600 : 200, correctLevel: QRCode.CorrectLevel.M});
+    });
+  };
+  if (window.QRCode) return draw();
+  const s = document.createElement("script");
+  s.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+  s.onload = draw;
+  s.onerror = () => { $("qr").textContent = "QR library didn't load — check the connection and reopen admin."; };
+  document.head.appendChild(s);
+}
+
+window.addEventListener("beforeunload", e => { if (isDirty) { e.preventDefault(); e.returnValue = ""; } });
+boot();
+</script>
+</body>
+</html>
